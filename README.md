@@ -2,7 +2,7 @@
 
 MySQL simple PHP client
 
-`composer install williamheelis-sqldb`
+`composer require williamheelis/sqldb`
 
 ## config like this
 
