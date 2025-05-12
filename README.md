@@ -1,10 +1,10 @@
-=== SQLdb ===
+## SQLdb
 
 MySQL simple PHP client
 
 `composer install williamheelis-sqldb`
 
-== config like this ==
+## config like this
 
 make a dir in your root `.SQLdb/` and in it make a `dbconfig.ini` file that looks like this
 
@@ -18,7 +18,7 @@ database = mydb
 
 IMPORTANT: make sure that `.sqldb\` is excluded in .gitignore
 
-== use like this ==
+## use like this
 
 get one row
 
