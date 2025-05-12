@@ -57,13 +57,13 @@ class SQLdb {
     }
 
     private function findProjectRoot(): string {
-        // Assumes vendor is in /project/vendor and you're inside vendor/yourlib
         $path = __DIR__;
-        while (!file_exists($path . '/vendor') && dirname($path) !== $path) {
+        while (!file_exists($path . '/composer.json') && dirname($path) !== $path) {
             $path = dirname($path);
         }
         return $path;
     }
+
     function debugmode(){
         $this->debug_mode = true;
     }
