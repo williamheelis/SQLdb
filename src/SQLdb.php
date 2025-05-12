@@ -21,7 +21,7 @@ class SQLdb {
     
     public $last_insert_id;
     private array $config;
-    
+
     function __construct(?string $iniPath = null){
 
         if (!$iniPath) {
@@ -112,9 +112,10 @@ class SQLdb {
         return $this->getnextrow();
     }
     function getnextrow(){
-        if ($this->res->num_rows > 0) {
+        if ($this->res && $this->res->num_rows > 0) {
             return $this->res->fetch_assoc();
         }
+        return null;
     }
     function rows(){
         return $this->res->num_rows;
@@ -129,7 +130,6 @@ class SQLdb {
         }
     }
     function last(){
-        //error_log("this->lastparams:" . PHP_EOL . print_r($this->lastparams,true),0);
         try{
             ksort($this->lastparams);
             $SQL = $this->lastsql;
