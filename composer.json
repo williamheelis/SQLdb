@@ -1,0 +1,14 @@
+{
+  "name": "williamheelis/sqldb",
+  "description": "SQL connection in PHP",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Restful\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.4"
+  }
+}
