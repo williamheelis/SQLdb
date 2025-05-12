@@ -57,11 +57,15 @@ class SQLdb {
     }
 
     private function findProjectRoot(): string {
-        $path = __DIR__;
-        while (!file_exists($path . '/composer.json') && dirname($path) !== $path) {
-            $path = dirname($path);
+        // This file is always present when Composer is in use
+        $autoloadPath = __DIR__ . '/../../../autoload.php';
+
+        if (!file_exists($autoloadPath)) {
+            throw new \Exception("Could not locate Composer autoloader.");
         }
-        return $path;
+        //error_log("the authloadPath is $autoloadPath" . PHP_EOL);
+        //error_log("the return authloadPath is " . dirname(dirname(realpath($autoloadPath))) . PHP_EOL);
+        return dirname(dirname(realpath($autoloadPath)));
     }
 
     function debugmode(){
