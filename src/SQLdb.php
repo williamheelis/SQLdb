@@ -76,18 +76,20 @@ class SQLdb {
         $this->res = null;
         $this->stmt = null;
         if (isset($this->conn)){
-            if (!($this->stmt = $this->conn->prepare($sql))){
-                error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error,0);
-                error_log(PHP_EOL . "SQL Error In:" . PHP_EOL . PHP_EOL . "  " . $this->last() . PHP_EOL, 0);
-            }
-            $this->bind();
-            try{
+            try {
+                $this->stmt = $this->conn->prepare($sql);
+                if (!$this->stmt) {
+                    throw new \mysqli_sql_exception("Prepare failed: " . $this->conn->error);
+                }
+
+                $this->bind();
+                
                 if (!isset($this->stmt)){
                     error_log("SQL ERROR: " . $this->last() ,0);
                 }
                 else{
                     if (!$this->stmt->execute()) {
-                        error_log("Execute failed: (" . $this->stmt->errno . ") " . $this->stmt->error,0);
+                        throw new \mysqli_sql_exception("Execute failed: " . $this->stmt->error);
                     }
                     else{
                         if ($this->is_insert($sql)){
@@ -95,12 +97,18 @@ class SQLdb {
                         }
                     }
                 }
+                
+                $this->res = $this->stmt->get_result();
+
+                if ($this->debug_mode) {
+                    error_log($this->conn->info, 0);
+                }
+            } catch (\Throwable $e) {
+                error_log("❌ SQL Exception:\n" . $e->getMessage(), 0);
+                error_log("🧠 Problematic SQL:\n" . $this->last(), 0);
+                error_log("📍 Stack Trace:\n" . $e->getTraceAsString(), 0);
+                throw $e; // Optional: rethrow or suppress
             }
-            catch (Exception $e){
-                error_log("" . $this->last() ,0);
-            }
-            $this->res = $this->stmt->get_result();
-            if ($this->debug_mode) error_log($this->conn->info,0);
         }
     }
     function quickquery($sql){
